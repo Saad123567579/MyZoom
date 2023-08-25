@@ -18,6 +18,9 @@ export const userSlice = createSlice({
         increment: (state) => {
             //do nothing 
         },
+        setuser: (state,action) => {
+            state.user = action.payload;
+        },
     },
     extraReducers: (builder) => {
     },
@@ -25,5 +28,5 @@ export const userSlice = createSlice({
 
 });
 
-export const { increment } = userSlice.actions;
+export const { increment , setuser } = userSlice.actions;
 export default userSlice.reducer;
