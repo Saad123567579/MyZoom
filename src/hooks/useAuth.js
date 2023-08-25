@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setuser } from "../redux/authSlice";
 import {firebaseAuth} from "../utils/firebase";
+
 export function useAuth(){
     const navigate = useNavigate();
     const dispatch = useDispatch();

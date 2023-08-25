@@ -3,6 +3,7 @@ import {  createSlice } from '@reduxjs/toolkit';
 //createAsyncThunk
 const initialState = {
     user: null,
+    otherusers:null,
     status:"idle"
 
 };
@@ -21,6 +22,9 @@ export const userSlice = createSlice({
         setuser: (state,action) => {
             state.user = action.payload;
         },
+        appendotheruser: (state,action) => {
+            state.otherusers.push(action.payload);
+        },
     },
     extraReducers: (builder) => {
     },
@@ -28,5 +32,5 @@ export const userSlice = createSlice({
 
 });
 
-export const { increment , setuser } = userSlice.actions;
+export const { increment , setuser ,appendotheruser} = userSlice.actions;
 export default userSlice.reducer;

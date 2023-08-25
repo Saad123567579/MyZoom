@@ -21,9 +21,12 @@ const Login = () => {
             await addDoc(userRef, obj);
             console.log("User added");
             await dispatch(setuser(obj));
+            window.location.href="/dashboard";
             
           } else {
             console.log("User already exists");
+            window.location.href="/dashboard";
+
           }
         } catch (e) {
           console.log(e);

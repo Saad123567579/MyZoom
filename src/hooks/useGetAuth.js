@@ -10,13 +10,14 @@ export function useGetAuth(){
     const dispatch = useDispatch();
     useEffect(() => {
       const unSubscribe = onAuthStateChanged(firebaseAuth,async(currentUser)=>{
+      
       if(currentUser) 
       {
         const obj = { "name": currentUser.displayName, "email": currentUser.email, "image": currentUser.photoURL, "uid": currentUser.uid };
         await dispatch(setuser(obj))
       }
+
       })
-    
       return () => {
         unSubscribe()
       }
