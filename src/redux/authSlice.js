@@ -3,7 +3,7 @@ import {  createSlice } from '@reduxjs/toolkit';
 //createAsyncThunk
 const initialState = {
     user: null,
-    otherusers:null,
+    otherusers:[],
     status:"idle"
 
 };
@@ -23,7 +23,7 @@ export const userSlice = createSlice({
             state.user = action.payload;
         },
         appendotheruser: (state,action) => {
-            state.otherusers.push(action.payload);
+            state.otherusers = [action.payload];
         },
     },
     extraReducers: (builder) => {

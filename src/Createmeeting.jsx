@@ -35,7 +35,7 @@ const Createmeeting = () => {
           </p>
         </div>
 
-        <div className="h-2/6 w-full lg:h-full lg:w-2/6 flex flex-col justify-center items-center hover:shadow-lg cursor-pointer bg-slate-300 mt-4 md:m-4">
+        <div onClick={()=>navigate('/conference')}   className="h-2/6 w-full lg:h-full lg:w-2/6 flex flex-col justify-center items-center hover:shadow-lg cursor-pointer bg-slate-300 mt-4 md:m-4">
           <div className="text-8xl">
             <svg
               className="w-12 h-12 text-gray-800 dark:text-white"
