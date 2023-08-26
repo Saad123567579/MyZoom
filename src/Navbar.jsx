@@ -18,7 +18,7 @@ const Navbar = () => {
     }
   };
   return (
-    <div className=" h-16 flex border-b-2  shadow-lg">
+    <div className=" h-16 flex border-b-2  shadow-lg bg-slate-300">
         <div className=" w-full h-full flex items-center justify-start ml-2">
           <h1 className="font-extrabold text-2xl md:text-4xl lg:text-4xl text-zoom-blue cursor-pointer" onClick={()=>navigate('/dashboard')}>
             ZOOM

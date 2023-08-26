@@ -4,7 +4,9 @@ import {  createSlice } from '@reduxjs/toolkit';
 const initialState = {
     user: null,
     otherusers:[],
-    status:"idle"
+    status:"idle",
+    mymeetings:null,
+    invitedmeetings:null
 
 };
 
@@ -34,6 +36,12 @@ export const userSlice = createSlice({
             // Update the state with the array of unique users
             state.otherusers = updatedUsers;
           },
+        setmymeetings: (state,action) => {
+            state.mymeetings = action.payload;
+        },  
+        setinvitedmeetings: (state,action) => {
+            state.invitedmeetings = action.payload;
+        },  
           
     },
     extraReducers: (builder) => {
@@ -42,5 +50,5 @@ export const userSlice = createSlice({
 
 });
 
-export const { increment , setuser ,appendotheruser} = userSlice.actions;
+export const { increment , setuser ,appendotheruser, setmymeetings , setinvitedmeetings} = userSlice.actions;
 export default userSlice.reducer;

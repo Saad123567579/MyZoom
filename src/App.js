@@ -8,9 +8,13 @@ import Oneon from "./Oneon";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { query, where, getDocs } from "firebase/firestore";
 import { userRef } from "./utils/firebase";
-import { appendotheruser } from "./redux/authSlice";
+import { appendotheruser, setmymeetings , setinvitedmeetings } from "./redux/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import Conference from "./Conference";
+import Viewmeeting from "./Viewmeeting";
+import Mymeeting from "./Mymeeting";
+import { meetingRef } from './utils/firebase'; // Make sure to import your firebaseAuth and userRef objects
+
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.auth?.user);
@@ -30,6 +34,56 @@ function App() {
     fetchUsers();
   }, [user, dispatch]);
 
+  useEffect(() => {
+    if (!user) return;
+  
+    const fetchData = async () => {
+      const firestoreQuery = query(meetingRef, where("createdBy.uid", "==", user.uid));
+      const querySnapshot = await getDocs(firestoreQuery);
+  
+      const fetchedData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      await dispatch(setmymeetings(fetchedData));
+    };
+  
+    fetchData();
+  }, [user,dispatch]);
+
+  useEffect(() => {
+    if (!user) return;
+  
+    const fetchData = async () => {
+      const query1 = query(meetingRef, where("invitors", "array-contains", user.name));
+      const query2 = query(meetingRef, where("inviteduser", "==", user.name));
+  
+      const [querySnapshot1, querySnapshot2] = await Promise.all([
+        getDocs(query1),
+        getDocs(query2)
+      ]);
+  
+      const fetchedData1 = querySnapshot1.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+  
+      const fetchedData2 = querySnapshot2.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+  
+      const combinedData = [...fetchedData1, ...fetchedData2];
+      await dispatch(setinvitedmeetings(combinedData));
+     
+    };
+  
+    fetchData();
+  }, [user,dispatch]);
+  
+  
+  
+
   return (
     <BrowserRouter>
       <Routes>
@@ -38,6 +92,8 @@ function App() {
         <Route path="/createmeeting" element={<Createmeeting />} />
         <Route path="/onemeeting" element={<Oneon />} />
         <Route path="/conference" element={<Conference />} />
+        <Route path="/mymeeting" element={<Mymeeting />} />
+        <Route path="/viewmeeting" element={<Viewmeeting />} />
 
         <Route path="*" element={<Notfound />} />
       </Routes>

@@ -12,6 +12,13 @@ import {toast} from "react-toastify";
 const Oneon = () => {
 
   useAuth(); // Call useAuth hook
+  function generateUniqueId() {
+    const timestamp = Date.now().toString();
+    const randomDigits = Math.floor(Math.random() * 100000).toString().padStart(5, '0'); // Generate 5-digit random number
+    const uniqueId = timestamp + randomDigits;
+  
+    return uniqueId.substring(0, 10); // Take the first 10 digits
+  }
   const {
     register,
     handleSubmit,
@@ -37,7 +44,9 @@ const Oneon = () => {
     
     const createdBy = user;
     const type = "one";
-    const obj = {...data,type,createdBy};
+    const uid = generateUniqueId();
+    const status = true;
+    const obj = {...data,type,createdBy,uid,status};
     await addDoc(meetingRef, obj);
     toast.success("Meeting Created");
     console.log("done");
@@ -53,7 +62,7 @@ const Oneon = () => {
           <Navbar />
           <div className="flex justify-center items-center h-screen bg-gray-100">
             <div className="w-96 bg-white p-8 rounded shadow">
-              <h2 className="text-xl font-semibold mb-4">Create 1on1 Meeting</h2>
+              <h2 className="text-xl font-semibold mb-4">Create 1 on 1 Meeting</h2>
               <form onSubmit={handleSubmit(onSubmit)} >
                 <div className="mb-4">
                   <label htmlFor="meetingName" className="block font-medium mb-1">

@@ -15,6 +15,13 @@ const Conference = () => {
 
 
     useAuth(); // Call useAuth hook
+    function generateUniqueId() {
+        const timestamp = Date.now().toString();
+        const randomDigits = Math.floor(Math.random() * 100000).toString().padStart(5, '0'); // Generate 5-digit random number
+        const uniqueId = timestamp + randomDigits;
+      
+        return uniqueId.substring(0, 10); // Take the first 10 digits
+      }
     const {
         register,
         handleSubmit,
@@ -41,7 +48,9 @@ const Conference = () => {
         if(inviters.length===0) return toast.info("Please Select Participants");
         const createdBy = user;
         const type = "conference";
-        const obj = {...data,type,createdBy , inviters};
+        const uid = generateUniqueId();
+        const status = true;
+        const obj = {...data,type,createdBy , inviters,uid,status};
         await addDoc(meetingRef, obj);
         toast.success("Meeting Created");
         console.log("done");
@@ -66,13 +75,13 @@ const Conference = () => {
 
 
     return (
-        <>
+        <div  >
             {users ? (
                 <>
                     <Navbar />
                     <div className="flex justify-center items-center h-screen bg-gray-100">
                         <div className="w-96 bg-white p-8 rounded shadow">
-                            <h2 className="text-xl font-semibold mb-4">Create 1on1 Meeting</h2>
+                            <h2 className="text-xl font-semibold mb-4">Create Video Conference</h2>
                             <form onSubmit={handleSubmit(onSubmit)} >
                                 <div className="mb-4">
                                     <label htmlFor="meetingName" className="block font-medium mb-1">
@@ -151,7 +160,7 @@ const Conference = () => {
             ) : (
                 <div>Loading...</div>
             )}
-        </>
+        </div >
     );
 };
 
