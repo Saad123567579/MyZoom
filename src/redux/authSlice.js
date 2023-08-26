@@ -22,9 +22,19 @@ export const userSlice = createSlice({
         setuser: (state,action) => {
             state.user = action.payload;
         },
-        appendotheruser: (state,action) => {
-            state.otherusers = [action.payload];
-        },
+        appendotheruser: (state, action) => {
+            const newUser = action.payload;
+            const uniqueUserNames = new Set(state.otherusers.map(user => user.name));
+            uniqueUserNames.add(newUser.name);
+            const updatedUsers = [...uniqueUserNames].map(name => {
+              const existingUser = state.otherusers.find(user => user.name === name);
+              return existingUser || { name };
+            });
+          
+            // Update the state with the array of unique users
+            state.otherusers = updatedUsers;
+          },
+          
     },
     extraReducers: (builder) => {
     },

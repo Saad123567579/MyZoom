@@ -20,7 +20,7 @@ function App() {
     const fetchUsers = async () => {
       const firestoreQuery = query(userRef, where("uid", "!=", user?.uid));
       const fetchedUsers = await getDocs(firestoreQuery);
-
+      
       fetchedUsers.docs.forEach(async (doc) => {
         const otherUserData = doc.data();
         await dispatch(appendotheruser(otherUserData));

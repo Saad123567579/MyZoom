@@ -5,7 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { } from './hooks/useAllUsers';
 import { useSelector } from 'react-redux';
 import { useForm } from "react-hook-form";
-
+import { addDoc } from 'firebase/firestore'; // Make sure to import query, where, getDocs, and addDoc
+import { meetingRef } from './utils/firebase'; // Make sure to import your firebaseAuth and userRef objects
+import {toast} from "react-toastify";
 
 const Oneon = () => {
 
@@ -16,6 +18,7 @@ const Oneon = () => {
     
 } = useForm();
   const navigate = useNavigate();
+  const user = useSelector((state)=>state?.auth?.user)
   const users = useSelector((state) => state?.auth?.otherusers);
 
   if (!users) {
@@ -31,7 +34,16 @@ const Oneon = () => {
   const day = today.getDate();
   var minDate = `${year}-${month}-${day}`;
   const onSubmit = async (data) => {
-    console.log(data);
+    
+    const createdBy = user;
+    const type = "one";
+    const obj = {...data,type,createdBy};
+    await addDoc(meetingRef, obj);
+    toast.success("Meeting Created");
+    console.log("done");
+    setTimeout(() => {
+      window.location.href = "/dashboard";
+    }, 2000);
 }
 
   return (
