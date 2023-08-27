@@ -15,7 +15,7 @@ const Mymeeting = () => {
     console.log("The date status is ",dbDate < currentDate)
     if(dbDate < currentDate){
       let id = event.target.id;
-      const link = `localhost:3000/join/${id}`;
+      const link = `my-zoom.vercel.app/join/${id}`;
       const tempInput = document.createElement('input');
       document.body.appendChild(tempInput);
       tempInput.value = link;
