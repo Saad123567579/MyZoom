@@ -2,9 +2,54 @@ import React from 'react';
 import Navbar from './Navbar';
 import { useSelector } from 'react-redux';
 import { useAuth } from './hooks/useAuth';
+import {toast} from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 const Mymeeting = () => {
+  const navigate = useNavigate();
   useAuth();
   const mymeetings = useSelector((state) => state?.auth?.mymeetings);
+  const handleCopyLink = (event) => {
+    let status = event.target.getAttribute('data-date');
+    const dbDate = new Date(status);
+    const currentDate = new Date();
+    console.log("The date status is ",dbDate < currentDate)
+    if(dbDate < currentDate){
+      let id = event.target.id;
+      const link = `localhost:3000/join/${id}`;
+      const tempInput = document.createElement('input');
+      document.body.appendChild(tempInput);
+      tempInput.value = link;
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      console.log(link);
+      toast.success("Link copied to clipboard");
+    }
+    else {
+      toast.info("This meeting has ended")
+    }
+  
+  }
+  const handleJoin = (event) => {
+    let status = event.target.getAttribute('data-date');
+    const dbDate = new Date(status);
+    const currentDate = new Date();
+    console.log("The date status is ",dbDate < currentDate)
+    if(dbDate < currentDate){
+      let id = event.target.id;
+      navigate(`/join/${id}`);
+    }
+    else {
+      toast.info("This meeting has ended");
+    }
+
+  }
+  function isDbDatePassed(dbDateStr) {
+    const dbDate = new Date(dbDateStr);
+    const currentDate = new Date();
+    console.log("The date status is ",dbDate < currentDate)
+    return dbDate < currentDate;
+  }
 
   return (
     <>
@@ -42,19 +87,19 @@ const Mymeeting = () => {
                       {mymeetings.map((data) => (
                         <tr key={data.uid}>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">{data.name}</div>
+                            <div className="text-sm text-gray-900 font-bold">{data.name}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap ">
+                            <div className="text-sm text-gray-900 font-bold">{data.type === "one" ? "1 On 1" : "Conference"}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">{data.type === "one" ? "1 On 1" : "Conference"}</div>
+                            <div className="text-sm text-gray-900 font-bold">{data.date}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">{data.date}</div>
+                            <div id={data.uid} data-date={data.date} onClick={handleJoin} className="text-sm text-gray-900 rounded-xl w-14 flex justify-center items-center bg-zoom-green font-bold cursor-pointer">{isDbDatePassed(data.date)?("Join"):("Ended")}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">{data.status ? "Join" : "Ended"}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">Link</div>
+                            <div id={data.uid} data-date={data.date} onClick={handleCopyLink} className="text-sm text-gray-900 rounded-xl w-14 flex justify-center items-center bg-zoom-green font-bold cursor-pointer">Link</div>
                           </td>
                         </tr>
                       ))}
