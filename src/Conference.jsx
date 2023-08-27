@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useAuth } from './hooks/useAuth';
 import Navbar from './Navbar';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,9 @@ import { meetingRef } from './utils/firebase'; // Make sure to import your fireb
 import {toast} from "react-toastify"
 const Conference = () => {
     const [inviters, setinviters] = useState([]);
+    useEffect(() => {
+      console.log("inviters are",inviters);
+    }, [inviters])
     
 
 
@@ -101,8 +104,7 @@ const Conference = () => {
                                         Invite Users
                                     </label>
                                     <select
-                                        
-                                        
+                                        multiple
                                         id="inviteduser"
                                         name="inviteduser"
                                         className="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
