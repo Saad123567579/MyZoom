@@ -14,6 +14,7 @@ import Conference from "./Conference";
 import Viewmeeting from "./Viewmeeting";
 import Mymeeting from "./Mymeeting";
 import { meetingRef } from './utils/firebase'; // Make sure to import your firebaseAuth and userRef objects
+import Join from "./Join";
 
 function App() {
   const dispatch = useDispatch();
@@ -94,6 +95,8 @@ function App() {
         <Route path="/conference" element={<Conference />} />
         <Route path="/mymeeting" element={<Mymeeting />} />
         <Route path="/viewmeeting" element={<Viewmeeting />} />
+        <Route path="/join/:id" element={<Join />} />
+
 
         <Route path="*" element={<Notfound />} />
       </Routes>
