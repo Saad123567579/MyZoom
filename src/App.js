@@ -55,8 +55,8 @@ function App() {
     if (!user) return;
   
     const fetchData = async () => {
-      const query1 = query(meetingRef, where("invitors", "array-contains", user.name));
-      const query2 = query(meetingRef, where("inviteduser", "==", user.name));
+      const query1 = query(meetingRef, where("inviters", "array-contains", user.name));
+      const query2 = query(meetingRef, where("inviteduser", "array-contains", user.name));
   
       const [querySnapshot1, querySnapshot2] = await Promise.all([
         getDocs(query1),
